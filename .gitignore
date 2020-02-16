@@ -1,0 +1,5 @@
+data/
+venv/
+apache/ssl.conf
+apache/nzedb.conf
+murmur/murmur.ini

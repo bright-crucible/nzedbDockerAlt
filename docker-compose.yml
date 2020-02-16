@@ -1,0 +1,80 @@
+version: '3.7'
+services:
+    redis:
+        build: redis
+        restart: unless-stopped
+        volumes:
+            - $PWD/data/sockets/redis:/run/redis
+    znc:
+        build: znc
+        restart: unless-stopped
+        volumes:
+            - $PWD/data/znc:/znc-data
+        expose:
+            - "6664"
+    mariadb:
+        build: mariadb
+        restart: unless-stopped
+        environment:
+            - MYSQL_ROOT_PASSWORD=draygon
+            - MYSQL_DATABASE=nzedb
+            - MYSQL_USER=nzedb
+            - MYSQL_PASSWORD=botwoon
+        volumes:
+            - $PWD/data/mariadb:/var/lib/mysql
+            - $PWD/data/sockets/mariadb:/run/mysqld
+            - $PWD/data/sockets/sphinxsearch:/run/sphinx
+    nzedb:
+        build: nzedb
+        volumes:
+            - $PWD/data/sockets/mariadb:/run/mysqld
+            - $PWD/data/sockets/php-fpm:/run/php-fpm
+            - $PWD/data/sockets/redis:/run/redis
+            - $PWD/data/sockets/sphinxsearch:/run/sphinx
+            - $PWD/data/nZEDb:/var/www/nZEDb
+            - $PWD/data/tmp:/var/www/nZEDb/resources/tmp
+        depends_on:
+            - "sphinxsearch"
+            - "redis"
+    apache:
+        build: apache
+        volumes:
+            - $PWD/data/nZEDb:/var/www/nZEDb
+            - $PWD/data/sockets/php-fpm:/run/php-fpm
+            - $PWD/data/sockets/mariadb:/run/mysqld
+            - $PWD/data/letsencrypt:/etc/letsencrypt
+        ports:
+            - "8090:80/tcp"
+            - "8443:443/tcp"
+        depends_on:
+            - "nzedb"
+    sphinxsearch:
+        build: sphinxsearch
+        volumes:
+            - $PWD/data/sockets/sphinxsearch:/run/sphinx
+            - $PWD/data/sockets/mariadb:/run/mysqld
+            - $PWD/data/sphinxsearch:/var/lib/sphinx
+        depends_on:
+            - "mariadb"
+    certbot:
+        build: certbot
+        restart: unless-stopped
+        ports:
+            - "80:8080/tcp"
+        volumes:
+            - $PWD/data/letsencrypt:/etc/letsencrypt
+            - $PWD/data/certbot:/var/lib/letsencrypt
+    murmur:
+        build: murmur
+        restart: unless-stopped
+        ports:
+            - "64738:64738/tcp"
+            - "64738:64738/udp"
+        volumes:
+            - $PWD/data/murmur:/home/mumble
+            - $PWD/data/letsencrypt:/etc/letsencrypt
+#    export:
+#        build: export
+#        volumes:
+#            - $PWD/data/export:/home/export/export
+#            - $PWD/data/sockets/mariadb:/run/mysqld

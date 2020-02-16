@@ -1,0 +1,2 @@
+0 3 * * * /home/parias/bin/nzedb_predb.sh > /dev/null 2>&1
+0 3 * * * /home/parias/bin/nzedb_le.sh > /dev/null 2>&1

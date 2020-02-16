@@ -1,0 +1,13 @@
+[Unit]
+
+Description=Mounts tmp for nZEDb
+
+  
+[Service]
+
+ExecStart=/usr/local/bin/tmp-unrar.sh
+
+
+[Install]
+
+WantedBy=multi-user.target

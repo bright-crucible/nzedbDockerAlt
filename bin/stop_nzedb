@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "Checking if tmux is still running" 1>&2
+if ! ./venv/bin/docker-compose exec -T --user nzedb nzedb tmux ls
+then
+    ./venv/bin/docker-compose down --volumes --remove-orphans
+else
+    echo "tmux is still running" 1>&2
+    exit 1
+fi
