@@ -1,7 +1,7 @@
-FROM mariadb:10.3
+FROM mariadb:10.4
 
 # To avoid mysql whining about this variable
-ENV TERM dumb 
+ENV TERM dumb
 
 RUN apt-get update \
     && apt-get install -y wget \
@@ -21,4 +21,4 @@ RUN usermod --uid 1001 mysql \
     && groupmod --gid 1001 mysql \
     && chown -R mysql:mysql /var/lib/mysql
 COPY nzedb.cnf /etc/mysql/conf.d
-#COPY users-table.sql /docker-entrypoint-initdb.d
+#COPY users-table.sql /

@@ -1,3 +1,4 @@
 #!/bin/bash
+set -e
 bin/stop_nzedb
 venv/bin/docker-compose up -d
