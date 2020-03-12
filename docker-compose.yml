@@ -35,7 +35,7 @@ services:
             - $PWD/data/tmp:/var/www/nZEDb/resources/tmp
             - $PWD/data/covers:/var/www/nZEDb/resources/covers
             - $PWD/data/nzb:/var/www/nZEDb/resources/nzb
-            - $PWD/data/configuratoin:/var/www/nZEDb/configuration
+            - $PWD/data/configuration:/var/www/nZEDb/configuration
         depends_on:
             - "sphinxsearch"
             - "redis"
