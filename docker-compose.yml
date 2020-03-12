@@ -33,6 +33,9 @@ services:
             - $PWD/data/sockets/sphinxsearch:/run/sphinx
             - $PWD/data/nZEDb:/var/www/nZEDb
             - $PWD/data/tmp:/var/www/nZEDb/resources/tmp
+            - $PWD/data/covers:/var/www/nZEDb/resources/covers
+            - $PWD/data/nzb:/var/www/nZEDb/resources/nzb
+            - $PWD/data/configuratoin:/var/www/nZEDb/configuration
         depends_on:
             - "sphinxsearch"
             - "redis"
